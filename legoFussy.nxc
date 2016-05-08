@@ -9,6 +9,13 @@ int i=0;
 int indP = 0;
 int indZ = 0;
 int indN = 0;
+float MaxN = 0;
+float MaxZ = 0;
+float MaxP = 0;
+int centroide = 0;
+int somatorio1 = 0;
+int somatorio2 = 0;
+int somatorio3 = 0;
 task main (){
      SetSensorLowspeed (IN_1);
      SetSensorLowspeed (IN_2);
@@ -114,7 +121,44 @@ task main (){
 		}else if ((p[0] < p[1]) && ( p[0] != 0 )) {
 			saida_n[indN] = p[0];
 			indN ++;
-		}
+	  }
+    for(i = 0; i < indP; i++){
+          if(saida_p[i] >= MaxP){
+                        MaxP = saida_p[i];
+          }
+    }
+    for(i = 0; i < indZ; i++){
+          if(saida_z[i] >= MaxZ){
+                        MaxZ = saida_z[i];
+          }
+    }
+    for(i = 0; i < indN; i++){
+          if(saida_n[i] >= MaxN){
+                        MaxN = saida_n[i];
+          }
+    }
+    for(i = 0; i < 20; i++){
+          somatorio1 += i;
+    }
+    for(i = 20; i < 40; i++){
+          somatorio2 += i;
+    }
+    for(i = 40; i <= 60; i++){
+          somatorio3 += i;
+    }
+    centroide = (somatorio1 * MaxN + somatorio2 * MaxZ + somatorio3 * MaxP)...
+    /(MaxN * 20 + MaxZ * 20 + MaxP * 20);
+    if(entrada[0] > entrada[1]){
+                  RotateMotor(OUT_A,40,centroide);
+                  RotateMotor(OUT_B,-40,centroide);
+                  Wait(1000);
+    }else if (entrada[0] < entrada[1]){
+          RotateMotor(OUT_A,-40,centroide);
+          RotateMotor(OUT_B,40,centroide);
+          Wait(1000);
+    }else{
+          OnFwd(OUT_AB,80);
+    }
 	}
 
 }
