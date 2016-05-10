@@ -1,7 +1,7 @@
-/*Código de um robô Lego usando a técnica
-codificação fuzzy */
-/*Definição dos vetores
-de entrada, saída e controle para a lógica Fuzzy */
+/*CÃ³digo de um robÃ´ Lego usando a tÃ©cnica
+codificaÃ§Ã£o fuzzy */
+/*DefiniÃ§Ã£o dos vetores
+de entrada, saÃ­da e controle para a lÃ³gica Fuzzy */
 int entrada [];
 float n[];
 float z[];
@@ -21,8 +21,8 @@ int somatorio1 = 0;
 int somatorio2 = 0;
 int somatorio3 = 0;
 task main (){
-     /*Declaração dos sensores e
-     inicialização dos arrays */
+     /*DeclaraÃ§Ã£o dos sensores e
+     inicializaÃ§Ã£o dos arrays */
      SetSensorColorFull (IN_1);
      SetSensorColorFull (IN_2);
      ArrayInit(entrada, 0, 2);
@@ -34,13 +34,13 @@ task main (){
      ArrayInit(saida_n, 0, 9);
 
      while(1){
-     /* Atribuição aos indices e
-     váriaveis de controle onde será pego
-     o máximo valor de cada Vetor correspondente ao:
+     /* AtribuiÃ§Ã£o aos indices e
+     vÃ¡riaveis de controle onde serÃ¡ pego
+     o mÃ¡ximo valor de cada Vetor correspondente ao:
      N -> Pouco Branco;
-     Z -> Médio Branco;
+     Z -> MÃ©dio Branco;
      P -> Muito Branco;
-     Intervalo de codificação fuzzy conforme propriedades
+     Intervalo de codificaÃ§Ã£o fuzzy conforme propriedades
      dos sensores de cor do Lego MindStorm que variam entre
      0 a 6. */
               indP = 0;
@@ -54,16 +54,16 @@ task main (){
               somatorio3 = 0;
 
               
-              //Aceleração Inicial dos Motores;
+              //AceleraÃ§Ã£o Inicial dos Motores;
 		            OnFwd(OUT_A,20);
 		            OnFwd(OUT_B,20);
               Wait(1000);
               //Valores dos sensores capturados e salvo no vetor entrada
 		            entrada[0] = SENSOR_1;
 		            entrada[1] = SENSOR_2;
-              /*Fuzzyficação das 9 possibilidades usando um intervalo de:
+              /*FuzzyficaÃ§Ã£o das 9 possibilidades usando um intervalo de:
               0 a 1.50 para N "Pouco Branco"
-              1.51 a 4.50 para Z "Médio Branco" tendo como ZE máximo o 3.00
+              1.51 a 4.50 para Z "MÃ©dio Branco" tendo como ZE mÃ¡ximo o 3.00
               e 4.51 a 6.00 para P "Muito Branco".*/
 		            for(i = 0; i < 2; i ++){
 			                 if(entrada[i] <= 1.50){
@@ -72,7 +72,7 @@ task main (){
 				                              p[i] = 0;
                     }
                     if(entrada[i] > 1.50 && entrada[i] <= 3.00){
-                                  //Cálculo usado para representar a subida ou descida nas retas
+                                  //CÃ¡lculo usado para representar a subida ou descida nas retas
 				                              n[i] = (1.00 - (((entrada[i]*1.00) - 1.50)/(3.00 - 1.50)));
 				                              z[i] = (1.00 - (1.00 - (((entrada[i] * 1.00) - 1.50)/( 3.00 - 1.50 ))));
 				                              p[i] = 0;
@@ -88,7 +88,7 @@ task main (){
 				                              p[i] = 1.00;
                     }
               }
-              //Agregação usando a lógica and e sempre recebendo o menor valor
+              //AgregaÃ§Ã£o usando a lÃ³gica and e sempre recebendo o menor valor
 
 		            if(n[0] >= n[1]){
 			                    saida_p[indP] = n[1];
@@ -153,8 +153,8 @@ task main (){
 			                 saida_n[indN] = p[0];
 			                 indN ++;
               }
-              /*Separação do maior valor de cada vetor N,ZE,P
-               para o cálculo do centróide.*/
+              /*SeparaÃ§Ã£o do maior valor de cada vetor N,ZE,P
+               para o cÃ¡lculo do centrÃ³ide.*/
               for(i = 0; i < indP; i++){
                     if(saida_p[i] >= MaxP){
                                   MaxP = saida_p[i];
@@ -170,8 +170,8 @@ task main (){
                                   MaxN = saida_n[i];
                     }
               }
-              /*Atribuição de valores para os intervalos de saída
-              no qual é usado uma saída de 0° a 60°*/
+              /*AtribuiÃ§Ã£o de valores para os intervalos de saÃ­da
+              no qual Ã© usado uma saÃ­da de 0Â° a 60Â°*/
               for(i = 0; i < 20; i++){
                     somatorio1 += i;
               }
@@ -181,11 +181,11 @@ task main (){
               for(i = 40; i <= 60; i++){
                     somatorio3 += i;
               }
-              /*Cálculo do centróide uma das técnicas usadas para
-              obter uma unica saída*/
+              /*CÃ¡lculo do centrÃ³ide uma das tÃ©cnicas usadas para
+              obter uma unica saÃ­da*/
               centroide = (somatorio1 * MaxN + somatorio2 * MaxZ + somatorio3 * MaxP)/(MaxN * 20 + MaxZ * 20 + MaxP * 20);
 
-              //Atribuição da saída aos motores do Lego
+              //AtribuiÃ§Ã£o da saÃ­da aos motores do Lego
               if((entrada[0] < 4.50) || (entrada[1] < 4.50)){
                              if(entrada[0] > entrada[1]){
                                            RotateMotor(OUT_A,20,centroide);
