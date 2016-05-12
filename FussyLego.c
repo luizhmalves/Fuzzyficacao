@@ -34,25 +34,25 @@ int main (){
 		indP = 0;
 		indZ = 0;
 		indN = 0;
-		entrada[0] = 4;//SensorUS(IN_1);
-		entrada[1] = 2;//SensorUS(IN_2);
+		entrada[0] = 6;//SensorUS(IN_1);
+		entrada[1] = 1;//SensorUS(IN_2);
 		for(i = 0; i < 2; i ++){
-			if(entrada[i] <= 1.75){
+			if(entrada[i] <= 1.50){
 				n[i] = 1.00;
 				z[i] = 0;
 				p[i] = 0;
 			}
-			if(entrada[i] > 1.75 && entrada[i] <= 3.50){
-				n[i] = (1.00 - (((entrada[i]*1.00) - 1.75)/(3.50 - 1.75)));
-				z[i] = (1.00 - (1.00 - (((entrada[i] * 1.00) - 1.75)/( 3.50 - 1.75 ))));
+			if(entrada[i] > 1.50 && entrada[i] <= 3.00){
+				n[i] = (1.00 - (((entrada[i]*1.00) - 1.50)/(3.00 - 1.50)));
+				z[i] = (1.00 - (1.00 - (((entrada[i] * 1.00) - 1.50)/( 3.00 - 1.50 ))));
 				p[i] = 0;
 			}
-			if(entrada[i] > 3.50 && entrada[i] <= 5.25){
+			if(entrada[i] > 3.00 && entrada[i] <= 4.50){
 				n[i] = 0;
-				z[i] = (1.00 - (((entrada[i]*1.00) - 3.50)/( 5.25 - 3.50)));
-				p[i] = (1.00 - (1.00 - (((entrada[i] * 1.00) - 3.50)/( 5.25 - 3.50 ))));
+				z[i] = (1.00 - (((entrada[i]*1.00) - 3.00)/( 4.50 - 3.00)));
+				p[i] = (1.00 - (1.00 - (((entrada[i] * 1.00) - 3.00)/( 4.50 - 3.00 ))));
 			}
-			if(entrada[i] > 5.25){
+			if(entrada[i] > 4.50){
 				n[i] = 0;
 				z[i] = 0;
 				p[i] = 1.00;
@@ -155,14 +155,18 @@ int main (){
 
 	centroide = (somatorio1 * MaxN + somatorio2 * MaxZ + somatorio3 * MaxP)/(MaxN * 20 + MaxZ * 20 + MaxP * 20);
 	
-	for(i = 0; i < indP; i++){
-		printf("Saida vetor P: %f\n",saida_p[i]);
+	if((entrada[0] < 4.50) || (entrada[1] < 4.50)){
+        if(entrada[0] > entrada[1]){
+        	printf("Estou rotacionando %.2f graus para o lado do sensor 1 que tem valor %d\n",centroide,entrada[0]);
+        	printf("Estou rotacionando -%.2f graus para o lado do sensor 2 que tem valor %d\n",centroide,entrada[1]);
+        	printf("Estou rotacionando retrocedendo.\n");
+        }else if (entrada[0] < entrada[1]){
+        	printf("Estou rotacionando -%.2f graus para o lado do sensor 1 que tem valor %d\n",centroide,entrada[0]);
+        	printf("Estou rotacionando %.2f graus para o lado do sensor 2 que tem valor %d\n",centroide,entrada[1]);
+        	printf("Estou rotacionando retrocedendo.\n");
+        }
+    }
+    else{
+       	printf("Estou andando em linha reta com sensor 1 = %d, sensor 2 = %d\n", entrada[0],entrada[1]);
 	}
-	for(i = 0; i < indZ; i++){
-		printf("Saida vetor Z: %f\n",saida_z[i]);
-	}
-	for(i = 0; i < indN; i++){
-		printf("Saida vetor N: %f\n",saida_n[i]);
-	}
-	printf("Saida Centroide: %f\n", centroide);
 }

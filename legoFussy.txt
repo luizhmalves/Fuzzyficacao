@@ -1,4 +1,4 @@
-/*Código de um robô Lego usando a técnica
+﻿/*Código de um robô Lego usando a técnica
 codificação fuzzy */
 /*Definição dos vetores
 de entrada, saída e controle para a lógica Fuzzy */
@@ -125,7 +125,7 @@ task main (){
 			                 saida_z[indZ] = z[0];
 			                 indZ ++;
               }
-		            if(z[0] >= p[1]){
+		if(z[0] >= p[1]){
                       saida_z[indZ] = p[1];
 			                   indZ ++;
               }else if(z[0] < p[1]){
